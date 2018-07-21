@@ -3,9 +3,13 @@ services:
   rainier-watch-api:
     build: .
     env_file: .env
-    ports:
-     - "3000:3000"
+    networks:
+      - rw
     depends_on:
      - redis
   redis:
     image: redis
+    networks:
+      - rw
+networks:
+  rw:
