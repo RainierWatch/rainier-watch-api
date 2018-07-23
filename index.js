@@ -16,11 +16,17 @@ app.get('/', (req, res) => {
 })
 
 app.get('/status', (req, res) => {
-    let response = {
-        is_the_mountain_out: true 
-    }
+    redis_client.get('is_the_mountain_out', function(error, result) {
+        if (error) {
+            throw error
+        }
 
-    res.json(response)
+        let response = {
+            is_the_mountain_out: result === 'true'
+        }
+
+        res.json(response)
+    })
 })
 
 app.post('/update', (req, res) => {
@@ -31,14 +37,21 @@ app.post('/update', (req, res) => {
     }
 
     let request_body = req.body
-    if (!request_body.status) {
+    if (!request_body.hasOwnProperty('status')) {
         res.status(422).send('status required')
         return
     }
 
-    res.json({
-        updated: true,
-        mountain_status: request_body.status
+    redis_client.set('is_the_mountain_out', request_body.status, function(error, result) {
+        if (error) {
+            throw error
+        }
+
+        res.json({
+            updated: result === 'OK',
+            result: result,
+            mountain_status: request_body.status
+        })
     })
 })
 
