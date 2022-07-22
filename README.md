@@ -1,7 +1,5 @@
 # Rainier Watch API
 
-To run, simply type:
+**Coming soon!**
 
-`docker-compose up -d`
-
-This will build the API container and spin up Redis.
+A publicly consumable API powered by [Rainier Watch's 'Is The Mountain out' App](https://app.rainierwatch.com) to answer "Is The Mountain out?"
